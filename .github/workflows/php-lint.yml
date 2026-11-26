@@ -1,0 +1,30 @@
+name: PHP Lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.0", "8.6"]
+    container: php:${{ matrix.php }}-cli
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # php -l exits 0 on deprecation notices, so also fail when any are printed.
+      - name: Lint PHP files
+        run: |
+          status=0
+          for file in $(find src -name '*.php'); do
+            output=$(php -d error_reporting=-1 -d display_errors=1 -l "$file" 2>&1) || status=1
+            echo "$output"
+            if echo "$output" | grep -q 'Deprecated'; then status=1; fi
+          done
+          exit $status
