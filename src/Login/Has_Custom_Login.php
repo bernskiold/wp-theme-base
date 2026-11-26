@@ -18,8 +18,14 @@ trait Has_Custom_Login {
 	}
 
 	public static function load_login_styles(): void {
+		$handle = static::get_slug() . '-login';
+
 		if ( file_exists( static::get_stylesheet_path( 'dist/login.css' ) ) ) {
-			wp_enqueue_style( static::get_slug() . '-login', static::get_stylesheet_url( 'dist/login.css' ), [], static::get_version(), 'all' );
+			wp_enqueue_style( $handle, static::get_stylesheet_url( 'dist/login.css' ), [], static::get_version(), 'all' );
+		} else {
+			// Without a stylesheet, register an empty handle so the logo CSS below still prints.
+			wp_register_style( $handle, false, [], static::get_version() );
+			wp_enqueue_style( $handle );
 		}
 
 		/**
@@ -31,7 +37,7 @@ trait Has_Custom_Login {
 
 			if ( $logo_url ) {
 				$logo_css = "body.login div#login h1 a { background-image: url('$logo_url'); }";
-				wp_add_inline_style( 'website-theme', $logo_css );
+				wp_add_inline_style( $handle, $logo_css );
 			}
 		}
 	}

@@ -262,12 +262,7 @@ abstract class Base_Theme {
 		 * @link https://developer.wordpress.org/themes/functionality/custom-logo/
 		 */
 		if ( static::$custom_logo && ! empty( static::$custom_logo ) ) {
-			add_theme_support( 'custom-logo', [
-				'height'      => 100,
-				'width'       => 400,
-				'flex-height' => true,
-				'flex-width'  => true,
-			] );
+			add_theme_support( 'custom-logo', static::$custom_logo );
 		}
 
 		/**

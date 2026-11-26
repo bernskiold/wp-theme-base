@@ -118,9 +118,9 @@ abstract class Asset_Manager implements Hookable {
 		$path = get_theme_file_path( 'assets/styles/src/styled-blocks.json' );
 
 		if ( file_exists( $path ) ) {
-			$json = file_get_contents( $path );
+			$blocks = json_decode( file_get_contents( $path ), true );
 
-			return json_decode( $json, true );
+			return is_array( $blocks ) ? $blocks : [];
 		}
 
 		return [];

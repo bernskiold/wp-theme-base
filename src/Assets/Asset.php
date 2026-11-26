@@ -5,7 +5,7 @@ namespace BernskioldMedia\WP\ThemeBase\Assets;
 abstract class Asset {
 
 	protected string $name;
-	protected string $url;
+	protected string $url = '';
 	protected ?string $version = null;
 	protected array $dependencies = [];
 	protected bool $should_enqueue = true;
